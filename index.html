@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#111116">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Vault">
+  <link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="icon" href="icon-192.png" sizes="192x192" type="image/png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+  <title>Vault</title>
+</head>
+<body>
+<div id="app" class="app">
+  <header class="topbar">
+    <div>
+      <span class="eyebrow">PERSONAL WALLET</span>
+      <h1>Vault</h1>
+    </div>
+    <div class="top-actions">
+      <button class="icon-btn" id="notificationsBtn" aria-label="Notifications">◌</button>
+      <button class="avatar" id="profileBtn">A</button>
+    </div>
+  </header>
+
+  <main id="homeMain">
+    <section class="balance-card">
+      <div class="balance-top">
+        <span>Total balance</span>
+        <button id="toggleBalance" class="eye-btn">◉</button>
+      </div>
+      <div id="balance" class="balance">$0.00</div>
+      <div class="balance-bottom">
+        <span id="accountId">Vault •••• 4821</span>
+        <span class="status-dot">● Active</span>
+      </div>
+    </section>
+
+    <button id="addMoneyBtn" class="add-money"><span>＋</span> Add from card</button>
+
+    <section class="actions">
+      <button data-action="send" class="action-card"><span class="action-icon">↗</span><b>Send</b><small>Pay someone</small></button>
+      <button data-action="receive" class="action-card"><span class="action-icon">↓</span><b>Receive</b><small>Get paid</small></button>
+      <button data-action="request" class="action-card"><span class="action-icon">＋</span><b>Request</b><small>Ask for money</small></button>
+    </section>
+
+    <section class="card-section virtual-card">
+      <div class="section-head"><h2>Linked card</h2><button id="addCardBtn" class="small-btn">Add card</button></div>
+      <div class="bank-card" id="bankCard">
+        <div class="card-brand">VAULT<span>•</span></div>
+        <div class="chip"></div>
+        <div id="cardNumber" class="card-number">••••  ••••  ••••  4821</div>
+        <div class="card-meta"><span>VALID THRU<br><b>12/29</b></span><span>CVV<br><b id="cvv">•••</b></span><span class="card-holder">VAULT MEMBER</span></div>
+        <button id="showCard" class="card-show">Tap to reveal</button>
+      </div>
+      <div id="linkedCards" class="linked-cards"></div>
+    </section>
+
+    <section class="card-section">
+      <div class="section-head"><h2>Spending</h2><span id="spendingTotal">$0.00</span></div>
+      <div class="chart" id="chart"></div>
+      <div class="legend">
+        <span><i></i> Food <b id="foodSpend">$0</b></span>
+        <span><i></i> Shopping <b id="shopSpend">$0</b></span>
+        <span><i></i> Bills <b id="billSpend">$0</b></span>
+        <span><i></i> Other <b id="otherSpend">$0</b></span>
+      </div>
+    </section>
+
+    <button id="intlTransferBtn" class="add-money"><span>🌐</span> International transfer</button>
+
+    <section class="card-section">
+      <div class="section-head">
+        <h2>Recent activity</h2>
+        <button id="clearHistory" class="small-btn">Clear</button>
+      </div>
+      <div class="filters">
+        <button class="filter active" data-filter="all">All</button>
+        <button class="filter" data-filter="sent">Sent</button>
+        <button class="filter" data-filter="received">Received</button>
+        <button class="filter" data-filter="added">Added</button>
+        <input id="searchTx" placeholder="Search" />
+      </div>
+      <div id="transactions" class="transactions"></div>
+    </section>
+
+    <section id="requestsSection" class="card-section hidden">
+      <div class="section-head"><h2>Pending requests</h2></div>
+      <div id="requests"></div>
+    </section>
+  </main>
+
+  <main id="profileMain" class="hidden">
+    <button class="small-btn" id="backHome" style="margin:4px 0 18px;font-size:13px">← Back</button>
+    <section class="balance-card" style="text-align:center">
+      <div class="avatar" style="margin:0 auto 14px;width:64px;height:64px;font-size:26px;display:grid;place-items:center">A</div>
+      <h2 style="margin:0 0 2px">Vault Member</h2>
+      <p style="color:var(--muted);font-size:12px;margin:0">VAULT-4821</p>
+    </section>
+
+    <section class="card-section">
+      <div class="section-head"><h2>Account</h2></div>
+      <div class="field"><label>Display name</label><input id="profileName" value="Vault Member"></div>
+      <div class="field"><label>Account ID</label><input value="VAULT-4821" readonly></div>
+      <button class="primary" id="saveProfileBtn">Save profile</button>
+    </section>
+
+    <section class="card-section">
+      <div class="section-head"><h2>Preferences</h2></div>
+      <button class="add-money" id="themeToggleBtn">Switch to light mode</button>
+      <button class="add-money" id="notifToggleBtn">Enable transaction notifications</button>
+      <div class="field">
+        <label>Accent color</label>
+        <div class="quick" id="accentSwatches">
+          <button type="button" class="accent-swatch" data-accent="purple" style="--sw:#8b7cf6">Purple</button>
+          <button type="button" class="accent-swatch" data-accent="red" style="--sw:#ef4444">Red</button>
+          <button type="button" class="accent-swatch" data-accent="green" style="--sw:#22c55e">Green</button>
+          <button type="button" class="accent-swatch" data-accent="blue" style="--sw:#3b82f6">Blue</button>
+          <button type="button" class="accent-swatch" data-accent="brown" style="--sw:#a5713f">Brown</button>
+          <button type="button" class="accent-swatch" data-accent="grey" style="--sw:#8a8a94">Grey</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="card-section">
+      <div class="section-head"><h2>Data</h2></div>
+      <button class="add-money" id="clearHistoryProfileBtn" style="border-color:#f17d8a55;color:var(--danger)">Clear transaction history</button>
+    </section>
+  </main>
+
+  <main id="addCardMain" class="hidden">
+    <button class="small-btn" id="backFromCard" style="margin:4px 0 18px;font-size:13px">← Back</button>
+    <section class="card-section" style="margin-top:0">
+      <div class="section-head"><h2>Add a card</h2></div>
+      <div class="bank-card" id="previewCard">
+        <div class="card-brand">VAULT<span>•</span></div>
+        <div class="chip"></div>
+        <div id="previewNumber" class="card-number">•••• •••• •••• ••••</div>
+        <div class="card-meta"><span>VALID THRU<br><b id="previewExpiry">MM/YY</b></span><span>CVV<br><b id="previewCvv">•••</b></span><span class="card-holder" id="previewName">CARDHOLDER</span></div>
+      </div>
+    </section>
+
+    <section class="card-section">
+      <div class="section-head"><h2>Your cards</h2></div>
+      <div id="linkedCardsChecklist" class="linked-cards"></div>
+    </section>
+
+    <section class="card-section">
+      <form id="addCardForm">
+        <div class="field"><label>Card number</label><input id="cardNum" inputmode="numeric" autocomplete="cc-number" placeholder="1234 5678 9012 3456" maxlength="19" required></div>
+        <div class="field"><label>Cardholder name</label><input id="cardName" autocomplete="cc-name" placeholder="e.g. Alex Morgan" required></div>
+        <div class="field-row">
+          <div class="field"><label>Expiry date</label><input id="cardExpiry" inputmode="numeric" autocomplete="cc-exp" placeholder="MM/YY" maxlength="5" required></div>
+          <div class="field"><label>CVV</label><input id="cardCvv" inputmode="numeric" autocomplete="cc-csc" type="password" placeholder="123" maxlength="4" required></div>
+        </div>
+        <div class="field"><label>Billing ZIP / postal code</label><input id="cardZip" autocomplete="postal-code" placeholder="e.g. 10001" required></div>
+        <button type="submit" class="primary">Add card</button>
+      </form>
+    </section>
+  </main>
+
+  <main id="txDetailMain" class="hidden">
+    <button class="small-btn" id="backFromTxDetail" style="margin:4px 0 18px;font-size:13px">← Back</button>
+    <section class="card-section" style="margin-top:0" id="txDetailContent"></section>
+  </main>
+
+  <nav class="bottom-nav">
+    <button class="nav active" data-nav="home">
+      <svg viewBox="0 0 24 24"><path d="M3 11.5L12 4l9 7.5"/><path d="M5.5 10v9a1 1 0 0 0 1 1h4v-6h3v6h4a1 1 0 0 0 1-1v-9"/></svg>
+      <small>Home</small>
+    </button>
+    <button class="nav" data-nav="card">
+      <svg viewBox="0 0 24 24"><rect x="2.5" y="5.5" width="19" height="13" rx="2.5"/><path d="M2.5 9.5h19"/><path d="M6 14.5h4"/></svg>
+      <small>Card</small>
+    </button>
+    <button class="nav" data-nav="activity">
+      <svg viewBox="0 0 24 24"><path d="M4 6.5h16"/><path d="M4 12h16"/><path d="M4 17.5h10"/></svg>
+      <small>Activity</small>
+    </button>
+    <button class="nav" data-nav="profile">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20c1.4-4 4-6 7.5-6s6.1 2 7.5 6"/></svg>
+      <small>Profile</small>
+    </button>
+  </nav>
+</div>
+
+<div id="modal" class="modal hidden">
+  <div class="modal-backdrop"></div>
+  <div class="modal-sheet">
+    <button id="closeModal" class="close">×</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+<script src="script.js"></script>
+</body>
+</html>
